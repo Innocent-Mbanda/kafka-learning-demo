@@ -1,6 +1,8 @@
 package com.mbanda.kafka.RestController;
 
+import com.mbanda.kafka.KafkaProducer.KafkaJsonProducer;
 import com.mbanda.kafka.KafkaProducer.KafkaProducer;
+import com.mbanda.kafka.Model.Student;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,5 +22,13 @@ public class MessageController {
     public ResponseEntity<String> sendMessage(@RequestBody String message){
          kafkaTemplate.publish(message);
         return ResponseEntity.ok("The message sent successfully");
+    }
+
+    private final KafkaJsonProducer kafkaJsonProducer;
+
+    @PostMapping("json")
+    public ResponseEntity<String> sendMessage(@RequestBody Student message){
+        kafkaJsonProducer.sendJsonMessage(message);
+        return ResponseEntity.ok("The message sent successfully as JSON");
     }
 }
